@@ -136,93 +136,79 @@ def extract_patient_info(user_input, state):
     return False
 
 def generate_structured_prompt(state, user_input, assistant_name, hospital_name):
-    """Generate a structured prompt based on the conversation stage"""
-    # Add user input to conversation history
-    state.add_to_history("user", user_input)
+    """Generate structured prompt based on conversation stage"""
+    current_date = datetime.datetime.now().strftime("%A, %B %d")
     
-    # Extract patient information if applicable
-    info_extracted = extract_patient_info(user_input, state)
+    # Base system prompt
+    prompt = f"""You are {assistant_name}, an AI medical assistant designed to help patients with preliminary medical 
+questions and schedule appointments with real doctors when necessary. You are professional, compassionate, and 
+informative. You always maintain a calm and reassuring demeanor. Today is {current_date}.
+
+Your capabilities include:
+- Collecting basic patient information
+- Providing general medical information
+- Offering preliminary assessments of common symptoms
+- Scheduling appointments with specialists
+- Providing lifestyle and wellness advice
+
+You must always clarify that you are an AI assistant and not a replacement for professional medical care.
+For serious or emergency conditions, you will immediately advise patients to seek emergency medical attention.
+"""
+
+    # Replace Unicode bullet points with hyphen
+    prompt = prompt.replace('\u2022', '-')
     
-    # Determine the next stage based on current stage and user input
+    # Add stage-specific instructions
     if state.current_stage == ConversationStage.GREETING:
-        if not state.patient_info["name"]:
-            state.update_stage(ConversationStage.COLLECTING_NAME)
-        elif info_extracted:
-            state.update_stage(ConversationStage.COLLECTING_AGE)
-        else:
-            state.update_stage(ConversationStage.COLLECTING_NAME)
+        prompt += "\nYou are in the GREETING stage. Focus on welcoming the patient warmly and asking for their name."
     
     elif state.current_stage == ConversationStage.COLLECTING_NAME:
-        if state.patient_info["name"]:
-            state.update_stage(ConversationStage.COLLECTING_AGE)
+        prompt += "\nYou are in the COLLECTING_NAME stage. Ask for the patient's name if not provided yet."
     
     elif state.current_stage == ConversationStage.COLLECTING_AGE:
-        if state.patient_info["age"]:
-            state.update_stage(ConversationStage.COLLECTING_CONTACT)
+        prompt += "\nYou are in the COLLECTING_AGE stage. You already have the patient's name. Ask for their age."
     
     elif state.current_stage == ConversationStage.COLLECTING_CONTACT:
-        if state.patient_info["contact"] or state.patient_info["email"]:
-            state.update_stage(ConversationStage.COLLECTING_SYMPTOMS)
+        prompt += "\nYou are in the COLLECTING_CONTACT stage. Ask for a phone number or email for contact purposes."
     
     elif state.current_stage == ConversationStage.COLLECTING_SYMPTOMS:
+        prompt += "\nYou are in the COLLECTING_SYMPTOMS stage. Ask about the patient's symptoms and health concerns."
+    
+    elif state.current_stage == ConversationStage.PROVIDING_INFORMATION:
+        prompt += "\nYou are in the PROVIDING_INFORMATION stage. Provide helpful medical information based on the symptoms described."
+    
+    elif state.current_stage == ConversationStage.BOOKING_APPOINTMENT:
+        prompt += "\nYou are in the BOOKING_APPOINTMENT stage. Help the patient schedule an appointment with an appropriate specialist."
+    
+    elif state.current_stage == ConversationStage.CONFIRMING_APPOINTMENT:
+        prompt += "\nYou are in the CONFIRMING_APPOINTMENT stage. Confirm appointment details and provide next steps."
+    
+    # Emergency keywords to watch for
+    prompt += """
+Watch for these emergency keywords: chest pain, difficulty breathing, severe bleeding, unconscious, stroke, heart attack, 
+seizure, severe allergic reaction, anaphylaxis, poisoning, suicidal thoughts.
+If any of these are mentioned, instruct the patient to call emergency services (911) immediately and do not continue 
+with normal conversation flow.
+"""
+    
+    # Generate patient context if we have information
+    patient_context = None
+    if state.patient_info["name"] or state.patient_info["age"] or state.patient_info["symptoms"]:
+        patient_context = "Current patient information:"
+        if state.patient_info["name"]:
+            patient_context += f" Name: {state.patient_info['name']},"
+        if state.patient_info["age"]:
+            patient_context += f" Age: {state.patient_info['age']},"
+        if state.patient_info["gender"]:
+            patient_context += f" Gender: {state.patient_info['gender']},"
+        if state.patient_info["contact"]:
+            patient_context += f" Contact: {state.patient_info['contact']},"
+        if state.patient_info["email"]:
+            patient_context += f" Email: {state.patient_info['email']},"
         if state.patient_info["symptoms"]:
-            state.update_stage(ConversationStage.ASKING_SYMPTOM_DURATION)
+            patient_context += f" Reported symptoms: {', '.join(state.patient_info['symptoms'])},"
     
-    elif state.current_stage == ConversationStage.ASKING_SYMPTOM_DURATION:
-        if state.patient_info["symptom_duration"]:
-            state.update_stage(ConversationStage.DIAGNOSING)
-    
-    # Check for appointment request at any stage
-    appointment_keywords = ["appointment", "book", "schedule", "visit", "see a doctor"]
-    if any(keyword in user_input.lower() for keyword in appointment_keywords):
-        # If we have all the necessary info, proceed to booking
-        if (state.patient_info["name"] and state.patient_info["age"] and 
-            (state.patient_info["contact"] or state.patient_info["email"])):
-            state.update_stage(ConversationStage.BOOKING_APPOINTMENT)
-        # Otherwise, collect missing info
-        elif not state.patient_info["name"]:
-            state.update_stage(ConversationStage.COLLECTING_NAME)
-        elif not state.patient_info["age"]:
-            state.update_stage(ConversationStage.COLLECTING_AGE)
-        elif not (state.patient_info["contact"] or state.patient_info["email"]):
-            state.update_stage(ConversationStage.COLLECTING_CONTACT)
-    
-    # Generate the next prompt based on the current stage
-    stage_prompts = {
-        ConversationStage.GREETING: f"You are {assistant_name}, a friendly medical assistant at {hospital_name}. Greet the patient warmly and ask for their name.",
-        
-        ConversationStage.COLLECTING_NAME: f"You need to collect the patient's name. If they haven't provided it yet, ask them politely: 'Could you please tell me your name?'",
-        
-        ConversationStage.COLLECTING_AGE: f"You are speaking with {state.patient_info['name']}. Now you need to collect their age. Ask them: 'Thank you, {state.patient_info['name']}. Could you please tell me your age?'",
-        
-        ConversationStage.COLLECTING_CONTACT: f"You need to collect contact information from {state.patient_info['name']} who is {state.patient_info['age']} years old. Ask them politely for a phone number or email address for appointment confirmations.",
-        
-        ConversationStage.COLLECTING_SYMPTOMS: f"Now that you have {state.patient_info['name']}'s basic information, ask them to describe their symptoms in detail. Be empathetic and professional.",
-        
-        ConversationStage.ASKING_SYMPTOM_DURATION: f"You need to know how long {state.patient_info['name']} has been experiencing these symptoms: {', '.join(state.patient_info['symptoms'])}. Ask them how long they've been having these symptoms.",
-        
-        ConversationStage.DIAGNOSING: f"Based on the symptoms {state.patient_info['name']} has described ({', '.join(state.patient_info['symptoms'])}) for {state.patient_info['symptom_duration']}, provide a possible diagnosis. Be careful not to be too definitive and suggest they should consult with a doctor for a proper diagnosis.",
-        
-        ConversationStage.BOOKING_APPOINTMENT: f"You're helping {state.patient_info['name']} book an appointment. Ask them what day and time would work best for them. Mention that you'll generate a PDF confirmation of their appointment details that they can download.",
-        
-        ConversationStage.CONFIRMING_APPOINTMENT: f"Confirm the appointment details with {state.patient_info['name']} and let them know that you'll generate a PDF summary of their appointment. Tell them the PDF will be ready momentarily."
-    }
-    
-    # Get the appropriate prompt for the current stage
-    prompt = stage_prompts.get(state.current_stage, f"You are {assistant_name}, a friendly medical assistant. Respond to the patient's query in a helpful and professional manner.")
-    
-    # Add patient context for more personalized responses
-    context = f"Patient information: Name: {state.patient_info['name']}, Age: {state.patient_info['age']}"
-    if state.patient_info["contact"]:
-        context += f", Contact: {state.patient_info['contact']}"
-    if state.patient_info["email"]:
-        context += f", Email: {state.patient_info['email']}"
-    if state.patient_info["symptoms"]:
-        context += f", Symptoms: {', '.join(state.patient_info['symptoms'])}"
-    if state.patient_info["symptom_duration"]:
-        context += f", Duration: {state.patient_info['symptom_duration']}"
-    
-    return prompt, context
+    return prompt, patient_context
 
 def generate_appointment_pdf(appointment_details, patient_info, hospital_name):
     """Generate a PDF with appointment details"""

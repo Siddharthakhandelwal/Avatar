@@ -357,7 +357,11 @@ def get_groq_response(user_input):
         # Add relevant conversation history (last 5 exchanges)
         for msg in conversation_state.conversation_history[-10:]:
             role = msg.get("role", "user")  # Default to user if role not specified
-            messages.append({"role": role, "content": msg.get("content", "")})
+            # Clean content of any potentially problematic Unicode characters
+            content = msg.get("content", "")
+            # Replace bullet points with hyphens
+            content = content.replace('\u2022', '-')
+            messages.append({"role": role, "content": content})
         
         # Call Groq API
         headers = {
@@ -373,10 +377,14 @@ def get_groq_response(user_input):
             "top_p": 0.9
         }
         
+        # Use json module with ensure_ascii=True to properly encode Unicode characters
+        import json
+        payload_json = json.dumps(payload, ensure_ascii=True)
+        
         response = requests.post(
             "https://api.groq.com/openai/v1/chat/completions",
             headers=headers,
-            json=payload
+            data=payload_json
         )
         
         if response.status_code == 200:
