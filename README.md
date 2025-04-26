@@ -12,15 +12,17 @@ A healthcare-focused virtual assistant with a human touch that can:
 
 1. Clone this repository
 2. Install dependencies: `pip install -r requirements.txt`
-3. Set up environment variables (optional but recommended for full functionality)
+3. Set up environment variables in a `.env` file (required for API functionality)
 4. Run the assistant:
    - Text-only mode: `python main.py --text`
    - Voice mode: `python main.py`
    - Test mode: `python main.py --test`
+   - Or use the convenience script: `python run.py`
 
 ## Project Structure
 
 - **main.py** - Entry point for the application
+- **run.py** - User-friendly launcher script with menu options
 - **text_mode.py** - Text-based interface
 - **medical_assistant.py** - Core assistant functionality
 - **appointment_scheduler.py** - Appointment booking and management
@@ -40,8 +42,8 @@ A healthcare-focused virtual assistant with a human touch that can:
 1. **Clone the repository**:
 
    ```bash
-   git clone <repository-url>
-   cd medical-assistant
+   git clone https://github.com/Siddharthakhandelwal/Avatar.git
+   cd Avatar
    ```
 
 2. **Create a virtual environment (recommended)**:
@@ -64,34 +66,43 @@ A healthcare-focused virtual assistant with a human touch that can:
 
 4. **Set up environment variables**:
    - Copy `env.sample` to a new file named `.env`
-   - Fill in your API keys (optional, see "API Integration" below)
+   - Fill in your API keys (see "API Integration" below)
+   - IMPORTANT: Never commit your `.env` file with real API keys to version control
 
 ### Running the Application
 
-There are three ways to run the application:
+There are multiple ways to run the application:
 
-1. **Text Mode** (no speech capabilities required):
+1. **Using the launcher script** (recommended for first-time users):
+
+   ```bash
+   python run.py
+   ```
+
+   This will show a menu with different options and check for required dependencies.
+
+2. **Text Mode** (no speech capabilities required):
 
    ```bash
    python main.py --text
    ```
 
-2. **Voice Mode** (requires speech services):
+3. **Voice Mode** (requires speech services):
 
    ```bash
    python main.py
    ```
 
-3. **Test Mode** (runs a predefined test sequence):
+4. **Test Mode** (runs a predefined test sequence):
    ```bash
    python main.py --test
    ```
 
 ## API Integration
 
-For full functionality, you can set up these APIs (optional):
+The application can run with limited functionality without APIs, but for full features:
 
-### OpenAI API
+### OpenAI API (Required for best experience)
 
 For natural language processing:
 
@@ -99,7 +110,15 @@ For natural language processing:
 2. Generate an API key
 3. Add to your `.env` file: `OPENAI_API_KEY=your_key_here`
 
-### Azure Speech Service
+### Hugging Face API (Alternative option)
+
+For a free alternative to OpenAI:
+
+1. Create an account at https://huggingface.co
+2. Generate a user access token
+3. Add to your `.env` file: `HUGGINGFACE_API_KEY=your_key_here`
+
+### Azure Speech Service (Required for voice mode)
 
 For voice capabilities:
 
@@ -110,6 +129,13 @@ For voice capabilities:
    AZURE_SPEECH_KEY=your_key_here
    AZURE_SPEECH_REGION=your_region_here
    ```
+
+## Security Notes
+
+- Never commit API keys to version control
+- The `.env` file is included in `.gitignore` to prevent accidental exposure
+- If you need to share this project, use `env.sample` with placeholder values
+- If you accidentally commit API keys, regenerate them immediately
 
 ## Features
 
@@ -157,9 +183,11 @@ You: My name is John and I'm available tomorrow morning
 
 ## Troubleshooting
 
-- **No voice output**: Make sure Azure Speech API keys are set or the system will fall back to text mode
-- **API errors**: Check internet connection and API key validity
-- **Missing files**: Ensure all project files are in the correct structure
+- **API key errors**: Make sure your `.env` file is properly configured with valid API keys
+- **No voice output**: Check Azure Speech API keys or use text mode with `--text` argument
+- **Python package errors**: Try reinstalling with `pip install -r requirements.txt --force-reinstall`
+- **Missing .env file**: Copy `env.sample` to `.env` and add your API keys
+- **"Module not found" errors**: Ensure you're running the application from the project root directory
 
 ## Development
 
