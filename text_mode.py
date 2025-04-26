@@ -108,7 +108,7 @@ medical_specialties = {
 
 # Free model API configuration
 API_URL = "https://api-inference.huggingface.co/models/facebook/blenderbot-400M-distill"
-headers = {"Authorization": f"Bearer {os.getenv('HUGGINGFACE_API_KEY', 'hf_dummy_key')}"}
+headers = {"Authorization": f"Bearer {os.getenv('HUGGINGFACE_API_KEY')}"}
 
 # Dictionary to store conversation context
 conversation_history = []
