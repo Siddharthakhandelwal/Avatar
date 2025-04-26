@@ -17,14 +17,14 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Get environment variables with defaults
 SPEECH_TIMEOUT = int(os.getenv('SPEECH_TIMEOUT', '5'))
-GROQ_API_KEY = os.getenv('GROQ_API_KEY', '')
+GROQ_API_KEY = os.getenv('GROQ_API_KEY')
 
 # Initialize text-to-speech engine as fallback
 engine = pyttsx3.init()
 
 # Azure Speech Service setup
-SPEECH_KEY = os.getenv("AZURE_SPEECH_KEY", "F9Gcgcr3uBODrscmhrMUEaorbV6WF9H6bqc4kghYsNqvcux9ZavxJQQJ99BCACYeBjFXJ3w3AAAYACOGYQHZ")
-SERVICE_REGION = os.getenv("AZURE_SPEECH_REGION", "eastus")
+SPEECH_KEY = os.getenv("AZURE_SPEECH_KEY")
+SERVICE_REGION = os.getenv("AZURE_SPEECH_REGION")
 speech_config = speechsdk.SpeechConfig(subscription=SPEECH_KEY, region=SERVICE_REGION)
 speech_synthesizer = speechsdk.SpeechSynthesizer(speech_config=speech_config)
 speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config)
