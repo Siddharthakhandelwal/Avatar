@@ -1,203 +1,144 @@
-# Dr. Maya - Medical AI Assistant
+# Maya - Medical Virtual Assistant
 
-A healthcare-focused virtual assistant with a human touch that can:
+Maya is an intelligent medical virtual assistant that combines speech recognition, natural language processing, and appointment management to provide a seamless healthcare interaction experience.
 
-- Interact with users using natural, empathetic voice or text conversations
-- Provide information about common medical conditions with professional medical knowledge
-- Suggest appropriate remedies and medications with proper dosage information
-- Book appointments with specialists based on symptoms
-- Track patient vitals and medications
+## Features
 
-## Quick Start
+- **Voice Interaction**: Real-time speech recognition and synthesis using Azure Cognitive Services.
+- **Natural Language Processing**: Powered by Groq's LLM for intelligent, context-aware conversation.
+- **Appointment Management**: Automated appointment scheduling and management, with Groq handling the entire appointment flow and summarizing details at the end.
+- **Wake Word Detection**: Background listening for hands-free activation.
+- **Conversation History**: Maintains context-aware conversations with history management and file-based saving.
+- **Error Handling**: Robust error handling and graceful degradation.
+- **Idle Timeout**: Automatic sleep mode after periods of inactivity.
+- **Emergency Detection**: Recognizes medical emergencies and advises immediate action.
+- **Date/Time Awareness**: The assistant always provides the current date and time to Groq, so relative dates like "tomorrow" are resolved accurately.
 
-1. Clone this repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Set up environment variables in a `.env` file (required for API functionality)
-4. Run the assistant:
-   - Text-only mode: `python main.py --text`
-   - Voice mode: `python main.py`
-   - Test mode: `python main.py --test`
-   - Or use the convenience script: `python run.py`
+## Prerequisites
 
-## Project Structure
+- Python 3.9+
+- Azure Cognitive Services account
+- Groq API key
+- Required Python packages (see `requirements.txt`)
 
-- **main.py** - Entry point for the application
-- **run.py** - User-friendly launcher script with menu options
-- **text_mode.py** - Text-based interface
-- **medical_assistant.py** - Core assistant functionality
-- **appointment_scheduler.py** - Appointment booking and management
-- **medication_manager.py** - Medication tracking and recommendations
-- **patient_vitals.py** - Patient health metrics tracking and analysis
-- **conversation_flow.py** - Structured conversation management
+## Environment Variables
 
-## Setup Instructions
+Create a `.env` file with the following variables (see `env.sample` for an example):
 
-### Prerequisites
+```
+GROQ_API_KEY=your_groq_api_key
+AZURE_SPEECH_KEY=your_azure_speech_key
+AZURE_SPEECH_REGION=your_azure_region
+SPEECH_TIMEOUT=5  # Optional, default is 5 seconds
+```
 
-- Python 3.8+ installed
-- pip package manager
+## Installation
 
-### Installation Steps
-
-1. **Clone the repository**:
+1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/Siddharthakhandelwal/Avatar.git
-   cd Avatar
+   git clone https://github.com/yourusername/maya-medical-assistant.git
+   cd maya-medical-assistant
    ```
 
-2. **Create a virtual environment (recommended)**:
-
-   ```bash
-   python -m venv venv
-
-   # On Windows:
-   venv\Scripts\activate
-
-   # On macOS/Linux:
-   source venv/bin/activate
-   ```
-
-3. **Install dependencies**:
+2. **Install dependencies:**
 
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Set up environment variables**:
-   - Copy `env.sample` to a new file named `.env`
-   - Fill in your API keys (see "API Integration" below)
-   - IMPORTANT: Never commit your `.env` file with real API keys to version control
+3. **Set up environment variables in `.env` file**
 
-### Running the Application
+## Usage
 
-There are multiple ways to run the application:
+### **Run the Assistant**
 
-1. **Using the launcher script** (recommended for first-time users):
-
-   ```bash
-   python run.py
-   ```
-
-   This will show a menu with different options and check for required dependencies.
-
-2. **Text Mode** (no speech capabilities required):
-
-   ```bash
-   python main.py --text
-   ```
-
-3. **Voice Mode** (requires speech services):
-
-   ```bash
-   python main.py
-   ```
-
-4. **Test Mode** (runs a predefined test sequence):
-   ```bash
-   python main.py --test
-   ```
-
-## API Integration
-
-The application can run with limited functionality without APIs, but for full features:
-
-### OpenAI API (Required for best experience)
-
-For natural language processing:
-
-1. Create an account at https://platform.openai.com
-2. Generate an API key
-3. Add to your `.env` file: `OPENAI_API_KEY=your_key_here`
-
-### Hugging Face API (Alternative option)
-
-For a free alternative to OpenAI:
-
-1. Create an account at https://huggingface.co
-2. Generate a user access token
-3. Add to your `.env` file: `HUGGINGFACE_API_KEY=your_key_here`
-
-### Azure Speech Service (Required for voice mode)
-
-For voice capabilities:
-
-1. Create a free Azure account at https://azure.microsoft.com
-2. Create a Speech Service resource
-3. Add to your `.env` file:
-   ```
-   AZURE_SPEECH_KEY=your_key_here
-   AZURE_SPEECH_REGION=your_region_here
-   ```
-
-## Security Notes
-
-- Never commit API keys to version control
-- The `.env` file is included in `.gitignore` to prevent accidental exposure
-- If you need to share this project, use `env.sample` with placeholder values
-- If you accidentally commit API keys, regenerate them immediately
-
-## Features
-
-### Medical Assistant
-
-- Natural conversation with medical context
-- Symptom assessment and preliminary guidance
-- Emergency detection and appropriate response
-
-### Appointment Management
-
-- Schedule appointments with specialists
-- Cancel or reschedule appointments
-- View available time slots
-
-### Medication Management
-
-- Track patient medications
-- Check for potential drug interactions
-- Provide medication information and suggestions
-
-### Vitals Tracking
-
-- Record and monitor vital signs
-- Analyze trends and detect concerns
-- Compare with normal ranges
-
-## Usage Examples
-
-### Text Mode Interaction
-
-```
-Dr. Maya: Hello, I'm Dr. Maya, your AI medical assistant. How can I help you today?
-You: I've been having headaches for the past three days
-Dr. Maya: I'm sorry to hear about your headaches. Could you tell me more about them? Are they constant or intermittent? On a scale of 1-10, how would you rate the pain? Do you have any other symptoms accompanying the headaches?
+```bash
+python siri.py
 ```
 
-### Scheduling an Appointment
+### **Voice Commands**
 
-```
-You: I'd like to schedule an appointment
-Dr. Maya: I'd be happy to help you schedule an appointment. Could you please tell me your name and what day and time would work best for you?
-You: My name is John and I'm available tomorrow morning
-```
+- **Wake Words:** "Hey Maya", "Hello", "Hi", "MedyCall", "Medical", "Assistant"
+- **Exit Phrases:** "Goodbye", "Bye", "Exit", "Quit", "End", "Thank you", "Thanks"
+
+## Features & Architecture
+
+### 1. **Voice Interaction**
+
+- Natural speech recognition (Azure)
+- Text-to-speech with SSML support
+- Background wake word detection
+
+### 2. **Conversation Management**
+
+- Context-aware responses
+- Conversation history tracking
+- Automatic history pruning
+
+### 3. **Appointment Handling**
+
+- Groq LLM handles the entire appointment conversation naturally.
+- At the end of the conversation, Groq summarizes and provides appointment details if discussed.
+- All relative dates (like "tomorrow") are resolved using the current date/time context.
+
+### 4. **Emergency Detection**
+
+- Recognizes keywords indicating a medical emergency and advises the user to call 911 or visit the ER
+
+### 5. **Error Handling**
+
+- Graceful degradation
+- Fallback responses
+- Error logging
+
+## File Overview
+
+- **siri.py**: Main assistant logic, robust, production-ready. Handles voice, LLM, and appointment features with background listening and conversation history. Includes emergency detection and file-based conversation/appointment saving. Always provides current date/time context to Groq.
+- **try.py**: Minimal, experimental version for quick tests. Useful for debugging or prototyping.
+- **requirements.txt**: Python dependencies.
+- **env.sample**: Example environment variable file.
+- **README.md**: This documentation.
+
+### Data Storage
+
+- **conversations/**: Directory where conversation histories are saved as JSON files.
 
 ## Troubleshooting
 
-- **API key errors**: Make sure your `.env` file is properly configured with valid API keys
-- **No voice output**: Check Azure Speech API keys or use text mode with `--text` argument
-- **Python package errors**: Try reinstalling with `pip install -r requirements.txt --force-reinstall`
-- **Missing .env file**: Copy `env.sample` to `.env` and add your API keys
-- **"Module not found" errors**: Ensure you're running the application from the project root directory
+- **Missing Environment Variables:**
 
-## Development
+  - Ensure your `.env` file is present and contains all required keys. The assistant will not function without valid API keys.
 
-To extend this project:
+- **Dependency Issues:**
+
+  - Run `pip install -r requirements.txt` to ensure all dependencies are installed.
+
+- **Audio Issues:**
+
+  - Ensure your microphone is connected and accessible by the OS.
+  - Azure Speech SDK must be able to access your audio hardware.
+
+- **Appointment/Conversation Not Saved:**
+  - Ensure the application has write permissions to create the `conversations/` directory.
+
+## Contributing
 
 1. Fork the repository
-2. Make your changes
-3. Run the tests: `python -m unittest discover`
-4. Submit a pull request
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
-## Disclaimer
+## License
 
-This application is for educational purposes only and not for actual medical use. All medical information and advice provided are simulated and should not replace consultation with real healthcare professionals.
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Azure Cognitive Services for speech capabilities
+- Groq for LLM integration
+- Python community for various libraries and tools
+
+**Note:**
+Appointment management is now handled entirely by Groq's LLM, with details summarized at the end of the conversation. If you wish to modularize appointment management or add more structured data storage, you may create a separate module for it.

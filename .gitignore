@@ -1,7 +1,37 @@
-# Python bytecode files
+# Environment variables
+.env
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed
+.cfg
+
+# Virtual Environment
+venv/
+ENV/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
 
 # Distribution / packaging
 dist/
@@ -14,17 +44,10 @@ env/
 ENV/
 .env
 
-# IDE specific files
-.idea/
-.vscode/
-*.swp
-*.swo
-
 # Project specific files
-appointments.json
 medications.json
 patient_vitals.json
-appointments/
+conversations/
 *.pdf
 
 # Log files
@@ -33,9 +56,6 @@ appointments/
 # OS specific files
 .DS_Store
 Thumbs.db
-
-# Environment variables
-.env
 
 # Temporary files
 tmp/
