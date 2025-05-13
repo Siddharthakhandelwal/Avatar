@@ -48,7 +48,7 @@ ENV/
 medications.json
 patient_vitals.json
 conversations/
-*.pdf
+
 
 # Log files
 *.log
