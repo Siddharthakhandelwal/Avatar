@@ -1,7 +1,7 @@
 # MedyBot Architecture & Workflow
 
 ## Overview
-MedyBot is a command-line medical assistant chatbot powered by OpenAI's GPT models. It interacts with users (patients), answers health-related questions, suggests over-the-counter medicines, and provides general advice, while always reminding users to consult a real doctor for serious issues.
+MedyBot is a command-line medical assistant chatbot powered by Google's Gemini API. It interacts with users (patients), answers health-related questions, suggests over-the-counter medicines, and provides general advice, while always reminding users to consult a real doctor for serious issues. The assistant persona is Dr. Maya, the medical assistant at Wellness Medical Center, and never refers to itself as an AI.
 
 ---
 
@@ -11,16 +11,16 @@ MedyBot is a command-line medical assistant chatbot powered by OpenAI's GPT mode
    - The user starts the chatbot and enters their health-related question or concern via the command line.
 
 2. **Conversation Context:**
-   - The chatbot maintains a conversation history (context) to provide coherent and context-aware responses.
+   - The chatbot maintains a conversation history (context) as a list of message dictionaries, each with a `role` ("user" or "model") and a `parts` list (containing the message text).
 
-3. **System Prompt:**
-   - A system prompt is used to instruct the AI to behave as a friendly, empathetic medical assistant, with clear boundaries (no diagnosis, always recommend consulting a doctor).
+3. **Instructions:**
+   - The first message in the conversation history is a user message containing detailed instructions for the assistant's behavior, including available doctors and response style.
 
-4. **OpenAI API Call:**
-   - The user’s message, along with the conversation history and system prompt, is sent to the OpenAI API (`gpt-3.5-turbo` or similar model) for processing.
+4. **Gemini API Call:**
+   - The full conversation history is sent to the Gemini API (`gemini-2.5-flash` model) for processing.
 
 5. **AI Response:**
-   - The OpenAI model generates a response, which is returned to the chatbot.
+   - The Gemini model generates a response, which is returned to the chatbot.
 
 6. **Display to User:**
    - The chatbot prints the AI’s response to the user in the command line.
@@ -39,14 +39,14 @@ User (Patient)
 [Command Line Interface]
     │
     ▼
-[Chatbot Script (medybot.py)]
+[Chatbot Script (chat_bot.py)]
     │
-    │  (Maintains conversation context)
+    │  (Maintains conversation history as list of {role, parts})
     ▼
-[OpenAI API]
+[Google Gemini API]
     │
     ▼
-[OpenAI GPT Model]
+[Gemini Model]
     │
     ▼
 [Chatbot Script]
@@ -64,11 +64,11 @@ User (Patient)
    - Example: "I have a headache and mild fever. What should I do?"
 
 2. **Processing:**
-   - The script appends the user message to the conversation history.
-   - The full conversation (system prompt + history) is sent to the OpenAI API.
+   - The script appends the user message to the conversation history as `{"role": "user", "parts": [user_input]}`.
+   - The full conversation (instructions + history) is sent to the Gemini API.
 
 3. **AI Generation:**
-   - The OpenAI model processes the input and generates a response based on the context and system instructions.
+   - The Gemini model processes the input and generates a response based on the context and instructions.
 
 4. **Output:**
    - The response is displayed to the user.
@@ -82,9 +82,9 @@ User (Patient)
 ## Key Components
 
 - **Command Line Interface:** Handles user input and output.
-- **Conversation Manager:** Maintains the conversation history for context-aware responses.
-- **System Prompt:** Sets the assistant’s behavior and boundaries.
-- **OpenAI API Client:** Sends requests and receives responses from the GPT model.
+- **Conversation Manager:** Maintains the conversation history for context-aware responses (list of message dicts).
+- **Instructions Message:** Sets the assistant’s behavior, available doctors, and boundaries.
+- **Gemini API Client:** Sends requests and receives responses from the Gemini model.
 
 ---
 
