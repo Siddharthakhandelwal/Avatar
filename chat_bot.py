@@ -21,7 +21,7 @@ instructions = (
     '''
     Available doctors (use these when scheduling):
             - Dr. Sarah Johnson (Cardiologist) in Vrindavan
-            - Dr. Michael Chen (Family Medicine) in Gaziabad
+            - Dr. Michael Chen (physician) in Gaziabad
             - Dr. Priya Patel (Pediatrician) in Delhi
             - Dr. Robert Wilson (Dermatologist) in gurgaon
             - Dr. Lisa Garcia (Neurologist) in Mumbai
@@ -31,7 +31,7 @@ instructions = (
 
 def medical_assistant_chat():
     print("👩‍⚕️ MedyBot: Hello! I am your medical assistant. How can I help you today?")
-    model = genai.GenerativeModel("gemini-2.5-flash")
+    model = genai.GenerativeModel("gemini-2.5-pro")
     chat_history = [
         {"role": "user", "parts": [instructions]}
     ]
