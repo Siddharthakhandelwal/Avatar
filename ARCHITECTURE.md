@@ -1,7 +1,7 @@
 # MedyBot Architecture & Workflow
 
 ## Overview
-MedyBot is a command-line medical assistant chatbot powered by Google's Gemini API. It interacts with users (patients), answers health-related questions, suggests over-the-counter medicines, and provides general advice, while always reminding users to consult a real doctor for serious issues. The assistant persona is Dr. Maya, the medical assistant at Wellness Medical Center, and never refers to itself as an AI.
+MedyBot is a command-line medical assistant chatbot powered by Google's Gemini API. It interacts with users (patients), answers health-related questions, suggests over-the-counter medicines, and provides general advice, while always reminding users to consult a real doctor for serious issues. The assistant persona is Nirog, the friendly medical assistant from Delhi working at Medycall, and never refers to itself as an AI.
 
 ---
 
@@ -16,8 +16,11 @@ MedyBot is a command-line medical assistant chatbot powered by Google's Gemini A
 3. **Instructions:**
    - The first message in the conversation history is a user message containing detailed instructions for the assistant's behavior, including available doctors and response style.
 
+4. **Timestamp Integration:**
+   - Each user message includes the current timestamp for context-aware responses and accurate appointment scheduling.
+
 4. **Gemini API Call:**
-   - The full conversation history is sent to the Gemini API (`gemini-2.5-flash` model) for processing.
+   - The full conversation history is sent to the Gemini API (`gemini-2.5-pro` model) for processing.
 
 5. **AI Response:**
    - The Gemini model generates a response, which is returned to the chatbot.
@@ -27,6 +30,20 @@ MedyBot is a command-line medical assistant chatbot powered by Google's Gemini A
 
 7. **Loop:**
    - Steps 1–6 repeat until the user types an exit command (e.g., `exit`, `quit`, `bye`).
+
+---
+
+## Available Medical Specialists
+
+The system includes access to the following qualified doctors for appointment booking:
+
+| Doctor | Specialty | Location | Availability |
+|--------|-----------|----------|--------------|
+| **Dr. Sarah Johnson** | Cardiologist (Heart Specialist) | Vrindavan | Mon-Fri, 9 AM - 5 PM |
+| **Dr. Michael Chen** | General Physician | Gaziabad | Mon-Sat, 8 AM - 6 PM |
+| **Dr. Priya Patel** | Pediatrician (Child Specialist) | Delhi | Tue-Sun, 10 AM - 4 PM |
+| **Dr. Robert Wilson** | Dermatologist (Skin Specialist) | Gurgaon | Mon-Fri, 11 AM - 7 PM |
+| **Dr. Lisa Garcia** | Neurologist (Brain & Nerve Specialist) | Mumbai | Wed-Sun, 9 AM - 3 PM |
 
 ---
 
@@ -83,8 +100,32 @@ User (Patient)
 
 - **Command Line Interface:** Handles user input and output.
 - **Conversation Manager:** Maintains the conversation history for context-aware responses (list of message dicts).
-- **Instructions Message:** Sets the assistant’s behavior, available doctors, and boundaries.
+- **Instructions Message:** Sets the assistant's behavior, available doctors, and boundaries.
+- **Timestamp System:** Integrates real-time information for context-aware responses and appointment scheduling.
 - **Gemini API Client:** Sends requests and receives responses from the Gemini model.
+- **Doctor Database:** Maintains information about available specialists across multiple cities.
+
+---
+
+## Enhanced Features
+
+### Real-Time Timestamp Integration
+- **Current Time Tracking**: Every user message includes the current date and time
+- **Appointment Scheduling**: Uses real-time information for accurate booking
+- **Session Management**: Tracks conversation duration and context
+- **Time-Sensitive Advice**: Provides context-aware medical guidance
+
+### Multi-City Doctor Network
+- **Geographic Coverage**: Doctors available across Delhi, Mumbai, Gurgaon, Gaziabad, and Vrindavan
+- **Specialty Matching**: Automatically matches users with appropriate specialists
+- **Availability Information**: Includes doctor schedules and working hours
+- **Professional Formatting**: Structures appointment details professionally
+
+### Advanced Conversation Management
+- **Context Retention**: Maintains full conversation history during session
+- **Memory Integration**: Builds responses based on previous interactions
+- **Natural Flow**: Enables follow-up questions and clarifications
+- **Session Isolation**: Each new session starts fresh for privacy
 
 ---
 
