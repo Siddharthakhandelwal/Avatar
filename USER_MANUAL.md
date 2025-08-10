@@ -670,4 +670,4 @@ Type: exit, quit, or bye
 
 *Remember: MedyBot is designed for educational and informational purposes only. Always consult qualified healthcare professionals for medical advice, diagnosis, and treatment.*
 
-**Last Updated**: January 2025 | **Version**: 2.0 | **Powered by**: Google Gemini 2.5 Pro
+**Last Updated**: August 2025 | **Version**: 2.0 | **Powered by**: Google Gemini 1.5 Pro

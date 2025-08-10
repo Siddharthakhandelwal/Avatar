@@ -40,7 +40,7 @@ instructions = ('''
 
 def medical_assistant_chat():
     print("👩‍⚕️ MedyBot: Hello! I am your medical assistant. How can I help you today?")
-    model = genai.GenerativeModel("gemini-2.5-pro")
+    model = genai.GenerativeModel("gemini-1.5-pro")
     chat_history = [
         {"role": "user", "parts": [instructions]}
     ]

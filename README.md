@@ -6,6 +6,11 @@
 
 ---
 
+## STATUS OF THE PROJECT
+This project is currently in the **alpha** stage of development. This means that while the core features are implemented and functional, there may be bugs or incomplete features. The project is not yet ready for production use.
+
+---
+
 ## 🌟 Features
 
 ### 🤖 **Intelligent Medical Assistant**
@@ -436,7 +441,7 @@ MedyBot is built using a simple yet effective architecture:
 #### 1. **Main Application** ([`chat_bot.py`](chat_bot.py))
 - **Purpose**: Entry point and conversation management
 - **Functions**: User input handling, API communication, response formatting
-- **Model**: Uses `gemini-2.5-pro` for advanced reasoning
+- **Model**: Uses `gemini-1.5-pro` for advanced reasoning
 
 #### 2. **Conversation Manager**
 - **Context Retention**: Maintains full conversation history
@@ -479,6 +484,13 @@ MedyBot is built using a simple yet effective architecture:
 - **Error Boundaries**: Graceful error handling and recovery
 
 ---
+
+## 🤝 How to Contribute
+We welcome contributions to MedyBot! Here are some ways you can help:
+
+*   **Reporting Bugs:** If you find a bug, please open an issue on our GitHub repository. Include as much detail as possible, including steps to reproduce the bug.
+*   **Suggesting Enhancements:** If you have an idea for a new feature or an improvement to an existing one, please open an issue on our GitHub repository.
+*   **Pull Requests:** We welcome pull requests! Please make sure to follow the coding style and to run the tests before submitting a pull request.
 
 ## 📞 Support & Contact
 
@@ -535,6 +547,8 @@ If you need assistance with MedyBot:
 ---
 
 ## 📄 License & Legal
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ### Software License
 This project is provided for educational and demonstration purposes. Please review the license file for specific terms and conditions.

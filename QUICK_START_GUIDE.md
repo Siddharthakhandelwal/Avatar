@@ -312,4 +312,4 @@ If you're still having trouble:
 
 *Remember: MedyBot is for educational purposes only. Always consult qualified healthcare professionals for medical advice.*
 
-**Last Updated**: January 2025 | **Version**: 2.0 | **Setup Time**: ~5 minutes
+**Last Updated**: August 2025 | **Version**: 2.0 | **Setup Time**: ~5 minutes

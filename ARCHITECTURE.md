@@ -20,7 +20,7 @@ MedyBot is a command-line medical assistant chatbot powered by Google's Gemini A
    - Each user message includes the current timestamp for context-aware responses and accurate appointment scheduling.
 
 4. **Gemini API Call:**
-   - The full conversation history is sent to the Gemini API (`gemini-2.5-pro` model) for processing.
+   - The full conversation history is sent to the Gemini API (`gemini-1.5-pro` model) for processing.
 
 5. **AI Response:**
    - The Gemini model generates a response, which is returned to the chatbot.
@@ -49,27 +49,15 @@ The system includes access to the following qualified doctors for appointment bo
 
 ## Architecture Diagram
 
-```
-User (Patient)
-    │
-    ▼
-[Command Line Interface]
-    │
-    ▼
-[Chatbot Script (chat_bot.py)]
-    │
-    │  (Maintains conversation history as list of {role, parts})
-    ▼
-[Google Gemini API]
-    │
-    ▼
-[Gemini Model]
-    │
-    ▼
-[Chatbot Script]
-    │
-    ▼
-User (Patient)
+```mermaid
+graph TD
+    A[User] --> B{Command Line Interface};
+    B --> C[chat_bot.py];
+    C --> D{Conversation History};
+    C --> E{Google Gemini API};
+    E --> F[Gemini Model];
+    F --> C;
+    C --> B;
 ```
 
 ---
@@ -135,12 +123,17 @@ User (Patient)
 
 ---
 
-## Extending the System
-- **GUI Integration:** The chatbot can be extended to a web or mobile interface.
-- **Medical Database Integration:** For more accurate medicine suggestions, integrate with a verified medical database.
-- **Multilingual Support:** Add language translation for broader accessibility.
+## Scalability and Future Improvements
+
+While the current implementation is a simple command-line tool, the architecture is designed to be scalable and extensible. Here are some potential future improvements:
+
+*   **GUI Integration:** The chatbot can be integrated into a web or mobile application to provide a more user-friendly interface.
+*   **Database Integration:** Instead of storing the doctor list in the code, it can be moved to a database. This would allow for easier updates and management of the doctor list.
+*   **User Profiles:** The chatbot can be extended to support user profiles. This would allow the chatbot to remember user preferences and medical history, and to provide more personalized advice.
+*   **Integration with Wearable Devices:** The chatbot can be integrated with wearable devices to collect real-time health data, such as heart rate and activity levels. This would allow the chatbot to provide more proactive and personalized advice.
+*   **Multilingual Support:** The chatbot can be extended to support multiple languages to make it accessible to a wider audience.
 
 ---
 
 ## Disclaimer
-This architecture is for a demo/educational chatbot and should not be used for real medical decision-making. 
+This architecture is for a demo/educational chatbot and should not be used for real medical decision-making.

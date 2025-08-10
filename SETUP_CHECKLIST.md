@@ -273,4 +273,4 @@
 
 *Keep this checklist handy for future reference or to help others set up MedyBot.*
 
-**Last Updated:** January 2025 | **Version:** 2.0 | **Setup Time:** ~15 minutes
+**Last Updated**: August 2025 | **Version**: 2.0 | **Setup Time**: ~15 minutes

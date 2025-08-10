@@ -271,4 +271,4 @@ Just remember to maintain medical ethics and safety standards.
 
 *Need immediate medical help? Don't use MedyBot - contact emergency services or visit your nearest hospital immediately.*
 
-**Last Updated**: January 2025 | **Version**: 2.0
+**Last Updated**: August 2025 | **Version**: 2.0
